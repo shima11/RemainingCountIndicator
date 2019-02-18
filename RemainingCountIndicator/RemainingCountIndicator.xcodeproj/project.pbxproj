@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D4FAA3BB221ADB6300C5B59A /* PBXContainerItemProxy */ = {
+		D4FAA3BF221AE16900C5B59A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D4FAA38F221ADAEE00C5B59A /* Project object */;
 			proxyType = 1;
@@ -64,6 +64,7 @@
 				D4FAA39A221ADAEE00C5B59A /* RemainingCountIndicator */,
 				D4FAA3A8221ADB0100C5B59A /* Demo */,
 				D4FAA399221ADAEE00C5B59A /* Products */,
+				D4FAA3BD221AE12E00C5B59A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,6 +98,13 @@
 				D4FAA3B5221ADB0200C5B59A /* Info.plist */,
 			);
 			path = Demo;
+			sourceTree = "<group>";
+		};
+		D4FAA3BD221AE12E00C5B59A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,7 +150,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				D4FAA3BC221ADB6300C5B59A /* PBXTargetDependency */,
+				D4FAA3C0221AE16900C5B59A /* PBXTargetDependency */,
 			);
 			name = Demo;
 			productName = Demo;
@@ -228,10 +236,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D4FAA3BC221ADB6300C5B59A /* PBXTargetDependency */ = {
+		D4FAA3C0221AE16900C5B59A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D4FAA397221ADAEE00C5B59A /* RemainingCountIndicator */;
-			targetProxy = D4FAA3BB221ADB6300C5B59A /* PBXContainerItemProxy */;
+			targetProxy = D4FAA3BF221AE16900C5B59A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
