@@ -1,1 +1,2 @@
 # RemainingCountIndicator
+![](demo.gif)
