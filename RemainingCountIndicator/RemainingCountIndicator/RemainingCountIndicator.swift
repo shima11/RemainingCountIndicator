@@ -8,9 +8,9 @@
 
 import UIKit
 
-public class RemainigCountIndicator: UIView {
+public final class RemainigCountIndicator: UIView {
 
-    enum Behavior {
+    private enum Behavior {
         case case1 // 残り文字数がborder1以上
         case case2 // 残り文字数が0以上border1以下
         case case3 // 残り文字数がborder2以上0未満
@@ -33,6 +33,27 @@ public class RemainigCountIndicator: UIView {
         }
     }
 
+    private enum Config {
+
+        #warning("Make it settable from outside.")
+
+        static let progressNormalColor = UIColor.init(white: 0, alpha: 0.8).cgColor
+        static let progressWarningColor = UIColor.orange.cgColor
+        static let progressErrorColor = UIColor.red.cgColor
+
+        static let placeholderColor = UIColor.init(white: 0, alpha: 0.2).cgColor
+
+        static let remainingTextColor = UIColor.darkGray.withAlphaComponent(0.8)
+        static let remainingTextErrorColor = UIColor.red
+
+        static let remainingTextFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+
+        static let border1: Int = 5
+        static let border2: Int = -5
+
+        static let lineWidth: CGFloat = 6
+    }
+
     public var remainingCount: Int {
         return maximumNumber - currentNumber
     }
@@ -40,28 +61,29 @@ public class RemainigCountIndicator: UIView {
     public var currentNumber: Int = 0 {
         didSet {
 
-            let behavior = Behavior.init(remainingCount: remainingCount, border1: border1, border2: border2)
+            let behavior = Behavior.init(remainingCount: remainingCount, border1: Config.border1, border2: Config.border2)
             switch behavior {
             case .case1:
-                progressShapeLayer.strokeColor = UIColor.init(white: 0, alpha: 0.8).cgColor
+                progressShapeLayer.strokeColor = Config.progressNormalColor
+                remainingCountLabel.textColor = Config.remainingTextColor
                 remainingCountLabel.isHidden = true
                 placeholderShapeLayer.isHidden = false
                 progressShapeLayer.isHidden = false
             case .case2:
-                progressShapeLayer.strokeColor = UIColor.orange.withAlphaComponent(0.8).cgColor
-                remainingCountLabel.textColor = .gray
+                progressShapeLayer.strokeColor = Config.progressWarningColor
+                remainingCountLabel.textColor = Config.remainingTextColor
                 remainingCountLabel.isHidden = false
                 placeholderShapeLayer.isHidden = false
                 progressShapeLayer.isHidden = false
             case .case3:
-                progressShapeLayer.strokeColor = UIColor.red.withAlphaComponent(0.8).cgColor
-                remainingCountLabel.textColor = .red
+                progressShapeLayer.strokeColor = Config.progressErrorColor
+                remainingCountLabel.textColor = Config.remainingTextErrorColor
                 remainingCountLabel.isHidden = false
                 placeholderShapeLayer.isHidden = false
                 progressShapeLayer.isHidden = false
             case .case4:
-                progressShapeLayer.strokeColor = UIColor.red.withAlphaComponent(0.8).cgColor
-                remainingCountLabel.textColor = .red
+                progressShapeLayer.strokeColor = Config.progressErrorColor
+                remainingCountLabel.textColor = Config.remainingTextErrorColor
                 remainingCountLabel.isHidden = false
                 placeholderShapeLayer.isHidden = true
                 progressShapeLayer.isHidden = true
@@ -76,19 +98,14 @@ public class RemainigCountIndicator: UIView {
 
     private let maximumNumber: Int
 
-    private let border1: Int = 5
-    private let border2: Int = -5
-
-    private let lineWidth: CGFloat = 6
-
     private let placeholderShapeLayer = CAShapeLayer()
     private let progressShapeLayer = CAShapeLayer()
     private let remainingCountLabel = UILabel()
 
-    public init(maximumNumber: Int, currentProgress: Int = 0) {
+    public init(maximumNumber: Int, currentNumber: Int = 0) {
 
         self.maximumNumber = maximumNumber
-        self.currentNumber = currentProgress
+        self.currentNumber = currentNumber
 
         super.init(frame: .zero)
 
@@ -97,16 +114,16 @@ public class RemainigCountIndicator: UIView {
         addSubview(remainingCountLabel)
 
         placeholderShapeLayer.fillColor = UIColor.clear.cgColor
-        placeholderShapeLayer.strokeColor = UIColor.init(white: 0, alpha: 0.2).cgColor
-        placeholderShapeLayer.lineWidth = lineWidth
+        placeholderShapeLayer.strokeColor = Config.placeholderColor
+        placeholderShapeLayer.lineWidth = Config.lineWidth
 
         progressShapeLayer.fillColor = UIColor.clear.cgColor
         progressShapeLayer.strokeStart = 0
         progressShapeLayer.strokeEnd = 0
         progressShapeLayer.lineCap = .round
-        progressShapeLayer.lineWidth = lineWidth
+        progressShapeLayer.lineWidth = Config.lineWidth
 
-        remainingCountLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        remainingCountLabel.font = Config.remainingTextFont
 
     }
 

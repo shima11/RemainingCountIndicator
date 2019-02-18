@@ -11,7 +11,7 @@ import RemainingCountIndicator
 
 class ViewController: UIViewController {
 
-    let remaingCountIndicator = RemainigCountIndicator(numberOfPages: 20, currentProgress: 0)
+    let remaingCountIndicator = RemainigCountIndicator(maximumNumber: 20)
 
     let incrementBbutton = UIButton()
     let decrementButton = UIButton()
@@ -46,11 +46,11 @@ class ViewController: UIViewController {
     }
 
     @objc func increment() {
-        remaingCountIndicator.currentProgress += 1
+        remaingCountIndicator.currentNumber += 1
     }
 
     @objc func decrement() {
-        remaingCountIndicator.currentProgress -= 1
+        remaingCountIndicator.currentNumber -= 1
     }
 
 }
