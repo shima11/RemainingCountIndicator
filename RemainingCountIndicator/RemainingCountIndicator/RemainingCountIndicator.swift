@@ -16,72 +16,79 @@ public class RemainigCountIndicator: UIView {
         case case3 // 残り文字数がborder2以上0未満
         case case4 // 残り文字数がborder2以下
 
-        static func behavior(remainingCount: Int, border1: Int, border2: Int) -> RemainigCountIndicator.Behavior {
+        init(remainingCount: Int, border1: Int, border2: Int) {
 
-            if remainingCount >= border1 {
-                return .case1
+            if remainingCount > border1 {
+                self = .case1
             }
-            else if remainingCount >= 0 {
-                return .case2
+            else if remainingCount > 0 {
+                self = .case2
             }
-            else if remainingCount >= border2 {
-                return .case3
+            else if remainingCount > border2 {
+                self = .case3
             }
             else {
-                return .case4
+                self = .case4
             }
         }
     }
 
     public var remainingCount: Int {
-        return numberOfPages - currentProgress
+        return maximumNumber - currentNumber
     }
 
-    public var currentProgress: Int = 0 {
+    public var currentNumber: Int = 0 {
         didSet {
 
-            let behavior = Behavior.behavior(remainingCount: remainingCount, border1: border1, border2: border2)
+            let behavior = Behavior.init(remainingCount: remainingCount, border1: border1, border2: border2)
             switch behavior {
             case .case1:
-                print("case1")
                 progressShapeLayer.strokeColor = UIColor.init(white: 0, alpha: 0.8).cgColor
+                remainingCountLabel.isHidden = true
+                placeholderShapeLayer.isHidden = false
+                progressShapeLayer.isHidden = false
             case .case2:
-                print("case2")
                 progressShapeLayer.strokeColor = UIColor.orange.withAlphaComponent(0.8).cgColor
+                remainingCountLabel.textColor = .gray
+                remainingCountLabel.isHidden = false
+                placeholderShapeLayer.isHidden = false
+                progressShapeLayer.isHidden = false
             case .case3:
-                print("case3")
                 progressShapeLayer.strokeColor = UIColor.red.withAlphaComponent(0.8).cgColor
+                remainingCountLabel.textColor = .red
+                remainingCountLabel.isHidden = false
+                placeholderShapeLayer.isHidden = false
+                progressShapeLayer.isHidden = false
             case .case4:
                 progressShapeLayer.strokeColor = UIColor.red.withAlphaComponent(0.8).cgColor
-                print("case4")
+                remainingCountLabel.textColor = .red
+                remainingCountLabel.isHidden = false
+                placeholderShapeLayer.isHidden = true
+                progressShapeLayer.isHidden = true
             }
 
-            remainingCountLabel.isHidden = (remainingCount < border1) ? false : true
-            placeholderShapeLayer.isHidden = (remainingCount < border2) ? true : false
-            progressShapeLayer.isHidden = (remainingCount < border2) ? true : false
-
-            progressShapeLayer.strokeEnd = min(CGFloat(currentProgress) / CGFloat(numberOfPages), 1.0)
+            progressShapeLayer.strokeEnd = min(CGFloat(currentNumber) / CGFloat(maximumNumber), 1.0)
 
             remainingCountLabel.text = "\(remainingCount)"
             remainingCountLabel.sizeToFit()
         }
     }
 
-    private let numberOfPages: Int
+    private let maximumNumber: Int
 
     private let border1: Int = 5
     private let border2: Int = -5
 
-    private let lineWidth: CGFloat = 8
+    private let lineWidth: CGFloat = 6
 
     private let placeholderShapeLayer = CAShapeLayer()
     private let progressShapeLayer = CAShapeLayer()
     private let remainingCountLabel = UILabel()
 
-    public init(numberOfPages: Int, currentProgress: Int = 0) {
+    public init(maximumNumber: Int, currentProgress: Int = 0) {
 
-        self.numberOfPages = numberOfPages
-        self.currentProgress = currentProgress
+        self.maximumNumber = maximumNumber
+        self.currentNumber = currentProgress
 
         super.init(frame: .zero)
 
@@ -94,14 +101,12 @@ public class RemainigCountIndicator: UIView {
         placeholderShapeLayer.lineWidth = lineWidth
 
         progressShapeLayer.fillColor = UIColor.clear.cgColor
-        progressShapeLayer.strokeColor = UIColor.init(white: 0, alpha: 0.3).cgColor
         progressShapeLayer.strokeStart = 0
         progressShapeLayer.strokeEnd = 0
         progressShapeLayer.lineCap = .round
         progressShapeLayer.lineWidth = lineWidth
 
-        remainingCountLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        remainingCountLabel.textColor = UIColor.darkText
+        remainingCountLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
 
     }
 
@@ -114,20 +119,18 @@ public class RemainigCountIndicator: UIView {
         super.layoutSubviews()
 
         remainingCountLabel.center = .init(x: bounds.width / 2, y: bounds.height / 2)
-
     }
 
     public override func layoutSublayers(of layer: CALayer) {
 
         super.layoutSublayers(of: layer)
 
-        placeholderShapeLayer.frame = self.layer.bounds
-        progressShapeLayer.frame = self.layer.bounds
+        placeholderShapeLayer.frame = layer.bounds
+        progressShapeLayer.frame = layer.bounds
 
-        let path = UIBezierPath(roundedRect: self.layer.bounds, cornerRadius: .infinity)
+        let path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: .infinity)
         placeholderShapeLayer.path = path.cgPath
         progressShapeLayer.path = path.cgPath
     }
-
 
 }
