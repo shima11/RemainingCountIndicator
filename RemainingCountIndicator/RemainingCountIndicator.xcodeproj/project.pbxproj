@@ -14,17 +14,8 @@
 		D4FAA3B1221ADB0200C5B59A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4FAA3B0221ADB0200C5B59A /* Assets.xcassets */; };
 		D4FAA3B4221ADB0200C5B59A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4FAA3B2221ADB0200C5B59A /* LaunchScreen.storyboard */; };
 		D4FAA3BA221ADB2700C5B59A /* RemainingCountIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FAA3B9221ADB2700C5B59A /* RemainingCountIndicator.swift */; };
+		D4FAA3C2221AEDC100C5B59A /* RemainingCountIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FAA3B9221ADB2700C5B59A /* RemainingCountIndicator.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		D4FAA3BF221AE16900C5B59A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D4FAA38F221ADAEE00C5B59A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D4FAA397221ADAEE00C5B59A;
-			remoteInfo = RemainingCountIndicator;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		D4FAA398221ADAEE00C5B59A /* RemainingCountIndicator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RemainingCountIndicator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,7 +141,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D4FAA3C0221AE16900C5B59A /* PBXTargetDependency */,
 			);
 			name = Demo;
 			productName = Demo;
@@ -228,20 +218,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4FAA3C2221AEDC100C5B59A /* RemainingCountIndicator.swift in Sources */,
 				D4FAA3AC221ADB0100C5B59A /* ViewController.swift in Sources */,
 				D4FAA3AA221ADB0100C5B59A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		D4FAA3C0221AE16900C5B59A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D4FAA397221ADAEE00C5B59A /* RemainingCountIndicator */;
-			targetProxy = D4FAA3BF221AE16900C5B59A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D4FAA3AD221ADB0100C5B59A /* Main.storyboard */ = {

@@ -11,18 +11,47 @@ import RemainingCountIndicator
 
 class ViewController: UIViewController {
 
-    let remaingCountIndicator = RemainigCountIndicator(numberOfPages: 10, currentProgress: 2)
+    let remaingCountIndicator = RemainigCountIndicator(numberOfPages: 20, currentProgress: 0)
+
+    let incrementBbutton = UIButton()
+    let decrementButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.addSubview(remaingCountIndicator)
+        view.addSubview(incrementBbutton)
+        view.addSubview(decrementButton)
+
         remaingCountIndicator.frame = .init(x: 0, y: 0, width: 60, height: 60)
         remaingCountIndicator.center = view.center
-        
-        view.addSubview(remaingCountIndicator)
 
+        incrementBbutton.addTarget(self, action: #selector(increment), for: .touchUpInside)
+        incrementBbutton.frame = .init(x: 0, y: 0, width: 96, height: 44)
+        incrementBbutton.center = .init(x: view.bounds.width / 4, y: view.bounds.height * 3 / 4)
+        incrementBbutton.setTitle("+", for: .normal)
+        incrementBbutton.setTitleColor(UIColor.darkText, for: .normal)
+        incrementBbutton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        incrementBbutton.backgroundColor = UIColor.groupTableViewBackground
+        incrementBbutton.layer.cornerRadius = 8
+
+        decrementButton.addTarget(self, action: #selector(decrement), for: .touchUpInside)
+        decrementButton.frame = .init(x: 0, y: 0, width: 96, height: 44)
+        decrementButton.center = .init(x: view.bounds.width * 3 / 4, y: view.bounds.height * 3 / 4)
+        decrementButton.setTitle("-", for: .normal)
+        decrementButton.setTitleColor(UIColor.darkText, for: .normal)
+        decrementButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        decrementButton.backgroundColor = UIColor.groupTableViewBackground
+        decrementButton.layer.cornerRadius = 8
     }
 
+    @objc func increment() {
+        remaingCountIndicator.currentProgress += 1
+    }
+
+    @objc func decrement() {
+        remaingCountIndicator.currentProgress -= 1
+    }
 
 }
 
