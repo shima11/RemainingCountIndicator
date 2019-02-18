@@ -63,6 +63,7 @@ public class RemainigCountIndicator: UIView {
             progressShapeLayer.strokeEnd = min(CGFloat(currentProgress) / CGFloat(numberOfPages), 1.0)
 
             remainingCountLabel.text = "\(remainingCount)"
+            remainingCountLabel.sizeToFit()
         }
     }
 
@@ -99,7 +100,7 @@ public class RemainigCountIndicator: UIView {
         progressShapeLayer.lineCap = .round
         progressShapeLayer.lineWidth = lineWidth
 
-        remainingCountLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        remainingCountLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         remainingCountLabel.textColor = UIColor.darkText
 
     }
@@ -112,7 +113,8 @@ public class RemainigCountIndicator: UIView {
 
         super.layoutSubviews()
 
-        remainingCountLabel.center = center
+        remainingCountLabel.center = .init(x: bounds.width / 2, y: bounds.height / 2)
+
     }
 
     public override func layoutSublayers(of layer: CALayer) {

@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         view.addSubview(incrementBbutton)
         view.addSubview(decrementButton)
 
-        remaingCountIndicator.frame = .init(x: 0, y: 0, width: 60, height: 60)
+        remaingCountIndicator.frame = .init(x: 0, y: 0, width: 44, height: 44)
         remaingCountIndicator.center = view.center
 
         incrementBbutton.addTarget(self, action: #selector(increment), for: .touchUpInside)
