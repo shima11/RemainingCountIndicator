@@ -91,8 +91,11 @@ public final class RemainigCountIndicator: UIView {
 
             progressShapeLayer.strokeEnd = min(CGFloat(currentNumber) / CGFloat(maximumNumber), 1.0)
 
-            remainingCountLabel.text = "\(remainingCount)"
-            remainingCountLabel.sizeToFit()
+            // for digit overflow
+            if (-99...99).contains(remainingCount) {
+                remainingCountLabel.text = "\(remainingCount)"
+                remainingCountLabel.sizeToFit()
+            }
         }
     }
 
@@ -101,6 +104,8 @@ public final class RemainigCountIndicator: UIView {
     private let placeholderShapeLayer = CAShapeLayer()
     private let progressShapeLayer = CAShapeLayer()
     private let remainingCountLabel = UILabel()
+
+    #warning("add feedback when change state, ex. animation, hapticfeedback like twitter")
 
     public init(maximumNumber: Int, currentNumber: Int = 0) {
 
