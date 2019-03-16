@@ -22,8 +22,11 @@ class ViewController: UIViewController {
         view.addSubview(incrementBbutton)
         view.addSubview(decrementButton)
 
-        remaingCountIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        remaingCountIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        remaingCountIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            remaingCountIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            remaingCountIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            ])
 
         incrementBbutton.addTarget(self, action: #selector(increment), for: .touchUpInside)
         incrementBbutton.frame = .init(x: 0, y: 0, width: 96, height: 44)
