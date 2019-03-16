@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import RemainingCountIndicator
 
 class ViewController: UIViewController {
 
-    let remaingCountIndicator = RemainigCountIndicator(maximumNumber: 20)
+    let remaingCountIndicator = RemainigCountIndicator(maximumNumber: 20, config: RemainigCountIndicator.Config.init(threshold1: 5, threshold2: -5, lineWidth: 3))
 
     let incrementBbutton = UIButton()
     let decrementButton = UIButton()
@@ -23,8 +22,11 @@ class ViewController: UIViewController {
         view.addSubview(incrementBbutton)
         view.addSubview(decrementButton)
 
-        remaingCountIndicator.frame = .init(x: 0, y: 0, width: 44, height: 44)
-        remaingCountIndicator.center = view.center
+        remaingCountIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            remaingCountIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            remaingCountIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            ])
 
         incrementBbutton.addTarget(self, action: #selector(increment), for: .touchUpInside)
         incrementBbutton.frame = .init(x: 0, y: 0, width: 96, height: 44)
