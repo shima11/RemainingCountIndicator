@@ -12,8 +12,8 @@ class ViewController: UIViewController {
 
     let remaingCountIndicator = RemainigCountIndicator(maximumNumber: 20, config: RemainigCountIndicator.Config.init(threshold1: 5, threshold2: -5, lineWidth: 3))
 
-    let incrementBbutton = UIButton()
-    let decrementButton = UIButton()
+    let incrementBbutton = UIButton(type: .system)
+    let decrementButton = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
