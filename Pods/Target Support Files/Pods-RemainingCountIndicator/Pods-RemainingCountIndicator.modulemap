@@ -1,6 +1,0 @@
-framework module Pods_RemainingCountIndicator {
-  umbrella header "Pods-RemainingCountIndicator-umbrella.h"
-
-  export *
-  module * { export * }
-}

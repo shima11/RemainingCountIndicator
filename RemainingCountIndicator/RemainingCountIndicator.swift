@@ -10,11 +10,11 @@ import UIKit
 
 public final class RemainigCountIndicator: UIView {
 
-    enum Behavior : Int {
+    public enum Behavior : Int {
         case case1 // 残り文字数がborder1以上
         case case2 // 残り文字数が0以上border1以下
         case case3 // 残り文字数がborder2以上0未満
-        case case4 // 残り文字数がborder2以下
+        case case4 // 残り文字数がborder2 以下
 
         init(remainingCount: Int, threshold1: Int, threshold2: Int) {
 
@@ -64,12 +64,12 @@ public final class RemainigCountIndicator: UIView {
         }
     }
 
-    final class IndicatorView: UIView {
+    private final class IndicatorView: UIView {
 
         private let placeholderShapeLayer = CAShapeLayer()
         private let progressShapeLayer = CAShapeLayer()
 
-        init(config: Config) {
+        fileprivate init(config: Config) {
 
             super.init(frame: .zero)
 
@@ -106,7 +106,7 @@ public final class RemainigCountIndicator: UIView {
 
         private var oldBehavior: Behavior? = nil
 
-        func set(behavior: Behavior, currentNumber: Int, maximumNumber: Int) {
+        internal func set(behavior: Behavior, currentNumber: Int, maximumNumber: Int) {
 
             defer {
                 self.oldBehavior = behavior
