@@ -12,7 +12,15 @@ RemainingCountIndicator is twitter like remaining count indicator.
 
 ## CocoaPods
 
+```
+pod 'RemainingCountIndicator', :git => 'https://github.com/shima11/RemainingCountIndicator.git'
+```
+
 ## Carthage
+
+```
+github "shima11/RemainingCountIndicator"
+```
 
 # Licence
 
