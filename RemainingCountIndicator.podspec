@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "RemainingCountIndicator"
-  s.version      = "0.0.2"
+  s.version      = "1.0.0"
   s.summary      = "Remaining count indicator like a tweet screen of twitter."
 
   s.description  = <<-DESC
