@@ -33,18 +33,40 @@ public final class RemainigCountIndicator: UIView {
         }
     }
 
-    private enum Style {
+    public struct Style {
 
-        static let progressNormalColor = UIColor.init(white: 0, alpha: 0.8)
-        static let progressWarningColor = UIColor.orange
-        static let progressErrorColor = UIColor.red
+        let progressNormalColor: UIColor
+        let progressWarningColor: UIColor
+        let progressErrorColor: UIColor
 
-        static let placeholderColor = UIColor.init(white: 0, alpha: 0.2)
+        let placeholderColor: UIColor
 
-        static let remainingTextColor = UIColor.darkGray.withAlphaComponent(0.8)
-        static let remainingTextErrorColor = UIColor.red
+        let remainingTextColor: UIColor
+        let remainingTextErrorColor: UIColor
+        let remainingTextFont: UIFont
 
-        static let remainingTextFont = UIFont.systemFont(ofSize: 12, weight: .medium)
+        let lineWidth: CGFloat
+
+        init(
+            progressNormalColor: UIColor = .init(white: 0, alpha: 0.8),
+            progressWarningColor: UIColor = .orange,
+            progressErrorColor: UIColor = .red,
+            placeholderColor: UIColor = .init(white: 0, alpha: 0.2),
+            remainingTextColor: UIColor = UIColor.darkGray.withAlphaComponent(0.8),
+            remainingTextErrorColor: UIColor = .red,
+            remainingTextFont: UIFont = .systemFont(ofSize: 12, weight: .medium),
+            lineWidth: CGFloat = 3
+            ) {
+
+            self.progressNormalColor = progressNormalColor
+            self.progressWarningColor = progressWarningColor
+            self.progressErrorColor = progressErrorColor
+            self.placeholderColor = placeholderColor
+            self.remainingTextColor = remainingTextColor
+            self.remainingTextErrorColor = remainingTextErrorColor
+            self.remainingTextFont = remainingTextFont
+            self.lineWidth = lineWidth
+        }
     }
 
     public struct Config {
@@ -52,15 +74,12 @@ public final class RemainigCountIndicator: UIView {
         let threshold1: Int
         let threshold2: Int
 
-        let lineWidth: CGFloat
-
-        public init(threshold1: Int, threshold2: Int, lineWidth: CGFloat) {
+        public init(threshold1: Int, threshold2: Int) {
 
             assert(threshold1 > threshold2, "invalid value, threshold2 is smaller than threshold1")
 
             self.threshold1 = threshold1
             self.threshold2 = threshold2
-            self.lineWidth = lineWidth
         }
     }
 
@@ -69,7 +88,11 @@ public final class RemainigCountIndicator: UIView {
         private let placeholderShapeLayer = CAShapeLayer()
         private let progressShapeLayer = CAShapeLayer()
 
-        fileprivate init(config: Config) {
+        private let style: Style
+
+        fileprivate init(config: Config, style: Style) {
+
+            self.style = style
 
             super.init(frame: .zero)
 
@@ -77,14 +100,14 @@ public final class RemainigCountIndicator: UIView {
             layer.addSublayer(progressShapeLayer)
 
             placeholderShapeLayer.fillColor = UIColor.clear.cgColor
-            placeholderShapeLayer.strokeColor = Style.placeholderColor.cgColor
-            placeholderShapeLayer.lineWidth = config.lineWidth
+            placeholderShapeLayer.strokeColor = style.placeholderColor.cgColor
+            placeholderShapeLayer.lineWidth = style.lineWidth
 
             progressShapeLayer.fillColor = UIColor.clear.cgColor
             progressShapeLayer.strokeStart = 0
             progressShapeLayer.strokeEnd = 0
             progressShapeLayer.lineCap = .round
-            progressShapeLayer.lineWidth = config.lineWidth
+            progressShapeLayer.lineWidth = style.lineWidth
 
         }
 
@@ -106,7 +129,7 @@ public final class RemainigCountIndicator: UIView {
 
         private var oldBehavior: Behavior? = nil
 
-        internal func set(behavior: Behavior, currentNumber: Int, maximumNumber: Int) {
+        internal func set(behavior: Behavior, currentNumber: Int, maximumNumber: Int, animated: Bool) {
 
             defer {
                 self.oldBehavior = behavior
@@ -116,22 +139,33 @@ public final class RemainigCountIndicator: UIView {
 
             progressShapeLayer.strokeEnd = min(CGFloat(currentNumber) / CGFloat(maximumNumber), 1.0)
 
-            // change animation
 
             switch behavior {
             case .case1:
-                progressShapeLayer.strokeColor = Style.progressNormalColor.cgColor
+                progressShapeLayer.strokeColor = style.progressNormalColor.cgColor
             case .case2:
-                progressShapeLayer.strokeColor = Style.progressWarningColor.cgColor
+                progressShapeLayer.strokeColor = style.progressWarningColor.cgColor
             case .case3:
-                progressShapeLayer.strokeColor = Style.progressErrorColor.cgColor
+                progressShapeLayer.strokeColor = style.progressErrorColor.cgColor
             case .case4:
-                progressShapeLayer.strokeColor = Style.progressErrorColor.cgColor
+                progressShapeLayer.strokeColor = style.progressErrorColor.cgColor
             }
+
+            switch behavior {
+            case .case1, .case2, .case3:
+                progressShapeLayer.isHidden = false
+                placeholderShapeLayer.isHidden = false
+            case .case4:
+                progressShapeLayer.isHidden = true
+                placeholderShapeLayer.isHidden = true
+            }
+
+            // change animation
 
             guard
                 let oldBehavior = oldBehavior,
-                oldBehavior != behavior
+                oldBehavior != behavior,
+                animated
                 else { return }
 
             if calcurateTransformIfNeeded(oldBehavior: oldBehavior, currentBehavior: behavior) {
@@ -163,12 +197,8 @@ public final class RemainigCountIndicator: UIView {
                 switch behavior {
                 case .case1, .case2, .case3:
                     animation.toValue = false
-                    progressShapeLayer.isHidden = false
-                    placeholderShapeLayer.isHidden = false
                 case .case4:
                     animation.toValue = true
-                    progressShapeLayer.isHidden = true
-                    placeholderShapeLayer.isHidden = true
                 }
 
                 progressShapeLayer.add(animation, forKey: "opacity")
@@ -196,25 +226,36 @@ public final class RemainigCountIndicator: UIView {
         return maximumNumber - currentNumber
     }
 
+    public var alwaysAnimation: Bool = true
+
     public var currentNumber: Int = 0 {
         didSet {
 
-            let behavior = Behavior.init(remainingCount: remainingCount, threshold1: config.threshold1, threshold2: config.threshold2)
+            let behavior = Behavior.init(
+                remainingCount: remainingCount,
+                threshold1: config.threshold1,
+                threshold2: config.threshold2
+            )
 
-            indicatorView.set(behavior: behavior, currentNumber: currentNumber, maximumNumber: maximumNumber)
+            indicatorView.set(
+                behavior: behavior,
+                currentNumber: currentNumber,
+                maximumNumber: maximumNumber,
+                animated: alwaysAnimation
+            )
 
             switch behavior {
             case .case1:
-                remainingCountLabel.textColor = Style.remainingTextColor
+                remainingCountLabel.textColor = style.remainingTextColor
                 remainingCountLabel.isHidden = true
             case .case2:
-                remainingCountLabel.textColor = Style.remainingTextColor
+                remainingCountLabel.textColor = style.remainingTextColor
                 remainingCountLabel.isHidden = false
             case .case3:
-                remainingCountLabel.textColor = Style.remainingTextErrorColor
+                remainingCountLabel.textColor = style.remainingTextErrorColor
                 remainingCountLabel.isHidden = false
             case .case4:
-                remainingCountLabel.textColor = Style.remainingTextErrorColor
+                remainingCountLabel.textColor = style.remainingTextErrorColor
                 remainingCountLabel.isHidden = false
             }
 
@@ -233,20 +274,22 @@ public final class RemainigCountIndicator: UIView {
     private let remainingCountLabel = UILabel()
 
     private let config: Config
+    private let style: Style
 
-    public init(maximumNumber: Int, config: Config) {
+    public init(maximumNumber: Int, config: Config, style: Style) {
 
         self.maximumNumber = maximumNumber
         self.config = config
+        self.style = style
 
-        self.indicatorView = .init(config: config)
+        self.indicatorView = .init(config: config, style: style)
 
         super.init(frame: .zero)
 
         addSubview(indicatorView)
         addSubview(remainingCountLabel)
 
-        remainingCountLabel.font = Style.remainingTextFont
+        remainingCountLabel.font = style.remainingTextFont
 
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
         remainingCountLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -258,11 +301,11 @@ public final class RemainigCountIndicator: UIView {
         remainingCountLabel.setContentHuggingPriority(.required, for: .horizontal)
         setContentHuggingPriority(.required, for: .horizontal)
 
-        let a = indicatorView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
-        a.priority = .defaultHigh
+        let indicatorViewLeftAnchor = indicatorView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
+        indicatorViewLeftAnchor.priority = .defaultHigh
 
-        let b = indicatorView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
-        b.priority = .defaultHigh
+        let indicatorViewRightAnchor = indicatorView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
+        indicatorViewRightAnchor.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
             indicatorView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
@@ -270,8 +313,8 @@ public final class RemainigCountIndicator: UIView {
             indicatorView.widthAnchor.constraint(equalToConstant: 24),
             indicatorView.heightAnchor.constraint(equalToConstant: 24),
             indicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            a,
-            b
+            indicatorViewLeftAnchor,
+            indicatorViewRightAnchor
             ])
 
         NSLayoutConstraint.activate([

@@ -10,7 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let remaingCountIndicator = RemainigCountIndicator(maximumNumber: 20, config: RemainigCountIndicator.Config.init(threshold1: 5, threshold2: -5, lineWidth: 3))
+    let remaingCountIndicator = RemainigCountIndicator(
+        maximumNumber: 20,
+        config: RemainigCountIndicator.Config.init(threshold1: 5, threshold2: -5),
+        style: RemainigCountIndicator.Style.init()
+    )
 
     let incrementBbutton = UIButton(type: .system)
     let decrementButton = UIButton(type: .system)
