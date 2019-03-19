@@ -8,12 +8,23 @@ RemainingCountIndicator is twitter like remaining count indicator.
 
 # Usage
 
+```
+let remaingCountIndicator = RemainigCountIndicator(
+  maximumNumber: 20,
+  config: RemainigCountIndicator.Config.init(threshold1: 5, threshold2: -5),
+  style: RemainigCountIndicator.Style.init()
+)
+
+remaingCountIndicator.currentNumber = 10
+```
+
 # Installation
 
 ## CocoaPods
 
 ```
-pod 'RemainingCountIndicator', :git => 'https://github.com/shima11/RemainingCountIndicator.git'
+pod 'RemainingCountIndicator'
+
 ```
 
 ## Carthage
