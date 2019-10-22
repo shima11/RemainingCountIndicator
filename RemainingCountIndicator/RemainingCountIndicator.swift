@@ -47,7 +47,7 @@ public final class RemainigCountIndicator: UIView {
 
         let lineWidth: CGFloat
 
-        init(
+        public init(
             progressNormalColor: UIColor = .init(white: 0, alpha: 0.8),
             progressWarningColor: UIColor = .orange,
             progressErrorColor: UIColor = .red,
